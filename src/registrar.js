@@ -36,6 +36,8 @@ const {
 // Renewal seem failing as it's not correctly estimating gas to return when buffer exceeds the renewal cost
 const transferGasCost = 21000
 
+let tld = "";
+
 function checkArguments({
   registryAddress,
   ethAddress,
@@ -321,19 +323,19 @@ export default class Registrar {
   }
 
   async getEthPrice() {
-    const oracleens = 'eth-usd.data.eth'
-    try{
+    const oracleens = 'eth-usd.data.' + tld
+    try {
       const contractAddress = await this.getAddress(oracleens)
       const oracle = await this.getOracle(contractAddress)
       return (await oracle.latestAnswer()).toNumber() / 100000000
-    }catch(e){
+    } catch (e) {
       console.warn(`Either ${oracleens} does not exist or Oracle is not throwing an error`, e)
     }
   }
 
   async getPriceCurve() {
     try {
-      return this.getText('oracle.ens.eth', 'algorithm')
+      return this.getText('oracle.ens.' + tld, 'algorithm')
     } catch (e) {
       // If the record is not set, fallback to linear.
       return 'linear'
@@ -366,7 +368,7 @@ export default class Registrar {
     const permanentRegistrarController =
       permanentRegistrarControllerWithoutSigner.connect(signer)
     const account = await getAccount()
-    const resolverAddr = await this.getAddress('resolver.eth')
+    const resolverAddr = await this.getAddress('resolver.' + tld)
     if (parseInt(resolverAddr, 16) === 0) {
       return permanentRegistrarController.makeCommitment(name, owner, secret)
     } else {
@@ -412,7 +414,7 @@ export default class Registrar {
     const account = await getAccount()
     const price = await this.getRentPrice(label, duration)
     const priceWithBuffer = getBufferedPrice(price)
-    const resolverAddr = await this.getAddress('resolver.eth')
+    const resolverAddr = await this.getAddress('resolver.' + tld)
     if (parseInt(resolverAddr, 16) === 0) {
       const gasLimit = await this.estimateGasLimit(() => {
         return permanentRegistrarController.estimateGas.register(
@@ -642,7 +644,7 @@ export default class Registrar {
     } else {
       // Only available for the new DNSRegistrar
       if (!isOld && owner === user) {
-        const resolverAddress = await this.getAddress('resolver.eth')
+        const resolverAddress = await this.getAddress('resolver.' + tld)
         return registrar.proveAndClaimWithResolver(
           claim.encodedName,
           data,
@@ -685,30 +687,31 @@ export default class Registrar {
   }
 }
 
-async function getEthResolver(ENS) {
-  const resolverAddr = await ENS.resolver(namehash('eth'))
+async function getEthResolver(tld, ENS) {
+  const resolverAddr = await ENS.resolver(namehash(tld))
   const provider = await getProvider()
   return getResolverContract({ address: resolverAddr, provider })
 }
 
-export async function setupRegistrar(registryAddress) {
+export async function setupRegistrar(tld, registryAddress) {
+  tld = tld;
   const provider = await getProvider()
   const ENS = getENSContract({ address: registryAddress, provider })
-  const Resolver = await getEthResolver(ENS)
+  const Resolver = await getEthResolver(tld, ENS)
 
-  let ethAddress = await ENS.owner(namehash('eth'))
+  let ethAddress = await ENS.owner(namehash(tld))
 
   let controllerAddress = await Resolver.interfaceImplementer(
-    namehash('eth'),
+    namehash(tld),
     permanentRegistrarInterfaceId
   )
   let legacyAuctionRegistrarAddress = await Resolver.interfaceImplementer(
-    namehash('eth'),
+    namehash(tld),
     legacyRegistrarInterfaceId
   )
 
   let bulkRenewalAddress = await Resolver.interfaceImplementer(
-    namehash('eth'),
+    namehash(tld),
     bulkRenewalInterfaceId
   )
 
