@@ -30,6 +30,8 @@ export async function setupWeb3({
   enforceReload = false,
   infura = false
 }) {
+  console.log("setupWeb3参数", customProvider, reloadOnAccountsChange, enforceReadOnly, enforceReload, infura);
+
   if (enforceReload) {
     provider = null
     readOnly = false
@@ -50,6 +52,9 @@ export async function setupWeb3({
   if (provider) {
     return { provider, signer }
   }
+
+  console.log("customProvider =", customProvider);
+
   if (customProvider) {
     if (typeof customProvider === 'string') {
       // handle raw RPC endpoint URL
