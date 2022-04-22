@@ -324,6 +324,8 @@ export default class Registrar {
 
   async getEthPrice() {
     const oracleens = 'eth-usd.data.' + tld
+    console.log("获取价格的oracle", oracleens);
+
     try {
       const contractAddress = await this.getAddress(oracleens)
       const oracle = await this.getOracle(contractAddress)
@@ -693,8 +695,10 @@ async function getEthResolver(tld, ENS) {
   return getResolverContract({ address: resolverAddr, provider })
 }
 
-export async function setupRegistrar(tld, registryAddress) {
-  tld = tld;
+export async function setupRegistrar(argTld, registryAddress) {
+  tld = argTld;
+  console.log("传进SDK的tld =", tld);
+
   const provider = await getProvider()
   const ENS = getENSContract({ address: registryAddress, provider })
   const Resolver = await getEthResolver(tld, ENS)
