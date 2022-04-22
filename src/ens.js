@@ -57,7 +57,8 @@ const contracts = {
 }
 
 export class ENS {
-  constructor({ networkId, registryAddress, provider }) {
+  constructor({ tld, networkId, registryAddress, provider }) {
+    this.tld = tld;
     this.contracts = contracts
     const hasRegistry =
       this.contracts[networkId] &&
@@ -507,7 +508,7 @@ export class ENS {
 
   async createSubdomain(name) {
     const account = await getAccount()
-    const publicResolverAddress = await this.getAddress('resolver.eth')
+    const publicResolverAddress = await this.getAddress('resolver.' + this.tld)
     try {
       return this.setSubnodeRecord(name, account, publicResolverAddress)
     } catch (e) {
