@@ -3,7 +3,8 @@ import { ENS } from './ens.js'
 import { setupRegistrar } from './registrar'
 export { utils, ethers } from 'ethers'
 
-export async function setupENS(tld, {
+export async function setupENS({
+  tld,
   customProvider,
   ensAddress,
   reloadOnAccountsChange,
@@ -19,7 +20,7 @@ export async function setupENS(tld, {
     infura
   })
   const networkId = await getNetworkId()
-  const ens = new ENS({ provider, networkId, registryAddress: ensAddress })
+  const ens = new ENS({ tld, provider, networkId, registryAddress: ensAddress })
   const registrar = await setupRegistrar(tld, ens.registryAddress)
   const network = await getNetwork()
   return { ens, registrar, provider: customProvider, network, providerObject: provider }

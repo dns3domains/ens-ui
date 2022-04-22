@@ -83,7 +83,7 @@ function isLabelValid(name) {
   }
 }
 
-const parseSearchTerm = (term, validTld) => {
+const parseSearchTerm = (term, validTld, theTLD) => {
   console.log(term, validTld)
   let regex = /[^.]+$/
 
@@ -97,7 +97,7 @@ const parseSearchTerm = (term, validTld) => {
     const termArray = term.split('.')
     const tld = term.match(regex) ? term.match(regex)[0] : ''
     if (validTld) {
-      if (tld === 'eth' && [...termArray[termArray.length - 2]].length < 3) {
+      if (tld === theTLD && [...termArray[termArray.length - 2]].length < 3) {
         // code-point length
         return 'short'
       }
