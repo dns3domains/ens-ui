@@ -641,6 +641,15 @@ export default class Registrar {
       : proofData.rrsets.map((x) => Object.values(x))
     const proof = proofData.proof
 
+    console.log("准备submitProof ++++++++++++++++++++");
+    console.log("data =", data);
+    console.log("data.length =", data.length);
+    console.log("isOld =", isOld);
+    console.log("owner =", owner);
+    console.log("user =", user);
+    console.log("proof =", proof);
+    console.log("准备submitProof --------------------");
+
     if (data.length === 0) {
       return registrar.claim(claim.encodedName, proof)
     } else {

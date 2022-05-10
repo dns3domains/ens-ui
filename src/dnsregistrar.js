@@ -65,7 +65,7 @@ class DNSRegistrar {
     const prover = DNSProver.create('https://cloudflare-dns.com/dns-query')
     const provider = await getProvider()
     return new Claim({
-      oracle: new this.OracleClass(this.oracleAddress, provider),
+      oracle: new this.OracleClass(this.oracleAddress, provider), 
       result: await prover.queryWithProof('TXT', textDomain),
       isFound: true,
       textDomain: textDomain,
