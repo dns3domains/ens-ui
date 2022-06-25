@@ -235,7 +235,7 @@ export class ENS {
       })
       const addr = await Resolver.text(namehash, key);
 
-      console.log("从resolver中读取text", addr, name, key, resolverAddr);
+      // console.log("从resolver中读取text", addr, name, key, resolverAddr);
 
       return addr
     } catch (e) {

@@ -30,7 +30,7 @@ export async function setupWeb3({
   enforceReload = false,
   infura = false
 }) {
-  console.log("setupWeb3参数", customProvider, reloadOnAccountsChange, enforceReadOnly, enforceReload, infura);
+  // console.log("setupWeb3参数", customProvider, reloadOnAccountsChange, enforceReadOnly, enforceReload, infura);
 
   if (enforceReload) {
     provider = null
@@ -53,7 +53,7 @@ export async function setupWeb3({
     return { provider, signer }
   }
 
-  console.log("customProvider =", customProvider);
+  // console.log("customProvider =", customProvider);
 
   if (customProvider) {
     if (typeof customProvider === 'string') {

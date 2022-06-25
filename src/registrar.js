@@ -324,7 +324,7 @@ export default class Registrar {
 
   async getEthPrice() {
     const oracleens = 'eth-usd.data.' + tld
-    console.log("获取价格的oracle", oracleens);
+    // console.log("获取价格的oracle", oracleens);
 
     try {
       const contractAddress = await this.getAddress(oracleens)
@@ -641,14 +641,14 @@ export default class Registrar {
       : proofData.rrsets.map((x) => Object.values(x))
     const proof = proofData.proof
 
-    console.log("准备submitProof ++++++++++++++++++++");
-    console.log("data =", data);
-    console.log("data.length =", data.length);
-    console.log("isOld =", isOld);
-    console.log("owner =", owner);
-    console.log("user =", user);
-    console.log("proof =", proof);
-    console.log("准备submitProof --------------------");
+    // console.log("准备submitProof ++++++++++++++++++++");
+    // console.log("data =", data);
+    // console.log("data.length =", data.length);
+    // console.log("isOld =", isOld);
+    // console.log("owner =", owner);
+    // console.log("user =", user);
+    // console.log("proof =", proof);
+    // console.log("准备submitProof --------------------");
 
     if (data.length === 0) {
       return registrar.claim(claim.encodedName, proof)
@@ -706,7 +706,7 @@ async function getEthResolver(tld, ENS) {
 
 export async function setupRegistrar(argTld, registryAddress) {
   tld = argTld;
-  console.log("传进SDK的tld =", tld);
+  // console.log("传进SDK的tld =", tld);
 
   const provider = await getProvider()
   const ENS = getENSContract({ address: registryAddress, provider })
